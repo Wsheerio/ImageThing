@@ -95,7 +95,7 @@ namespace ImageThing
                     this.Width = Convert.ToInt32(width / (height / resH));
                     pictureBox1.Width = Convert.ToInt32(width / (height / resH));
                 }
-                if (height - resH < 100 && width > resW)
+                if (width > resW && width / height > resW / resH)
                 {
                     this.Width = Convert.ToInt32(resW);
                     pictureBox1.Width = Convert.ToInt32(resW);
