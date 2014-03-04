@@ -1,0 +1,4 @@
+ImageThing
+==========
+
+Minimalistic Image Viewer
