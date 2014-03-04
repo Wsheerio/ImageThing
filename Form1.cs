@@ -23,6 +23,7 @@ namespace ImageThing
         int index;
         int inc;
         string del;
+        string[] args;
         string[] files;
         int fileR = 0;
         bool fullS = false;
@@ -80,21 +81,28 @@ namespace ImageThing
             pictureBox1.Image = Image.FromFile(files[inc]);
             if (fullS == false)
             {
-                if (width >= resW)
+                if (width > resW)
                 {
                     this.Width = Convert.ToInt32(resW);
                     pictureBox1.Width = Convert.ToInt32(resW);
                     this.Height = Convert.ToInt32(height / (width / resW));
                     pictureBox1.Height = Convert.ToInt32(height / (width / resW));
                 }
-                if (height >= resH)
+                if (height > resH)
                 {
                     this.Height = Convert.ToInt32(resH);
                     pictureBox1.Height = Convert.ToInt32(resH);
                     this.Width = Convert.ToInt32(width / (height / resH));
                     pictureBox1.Width = Convert.ToInt32(width / (height / resH));
                 }
-                if (width < resW && height < resH)
+                if (height - resH < 100 && width > resW)
+                {
+                    this.Width = Convert.ToInt32(resW);
+                    pictureBox1.Width = Convert.ToInt32(resW);
+                    this.Height = Convert.ToInt32(height / (width / resW));
+                    pictureBox1.Height = Convert.ToInt32(height / (width / resW));
+                }
+                if (width <= resW && height <= resH)
                 {
                     this.Height = Convert.ToInt32(height);
                     pictureBox1.Height = Convert.ToInt32(height);
@@ -140,7 +148,7 @@ namespace ImageThing
             pictureBox1.MouseUp += new MouseEventHandler(pictureBox1_MouseUp);
             this.KeyDown += new KeyEventHandler(pictureBox1_KeyDown);
             this.KeyUp += new KeyEventHandler(Form1_KeyUp);
-            string[] args = Environment.GetCommandLineArgs();
+            args = Environment.GetCommandLineArgs();
             test = args[1];
             index = test.LastIndexOf("\\");
             test = test.Substring(0, index);
