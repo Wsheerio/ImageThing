@@ -17,20 +17,43 @@ namespace ImageThing
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
         [DllImportAttribute("user32.dll")]
         public static extern bool ReleaseCapture();
-        double resH = Screen.PrimaryScreen.WorkingArea.Height;
-        double resW = Screen.PrimaryScreen.WorkingArea.Width;
-        double height;
-        double width;
-        string test;
+        [DllImport("User32.dll")]
+        public static extern Int32 SetForegroundWindow(int hWnd);   
         int inc;
-        double oldWidth;
-        double oldHeight;
         string del;
+        double width;
+        double height;
+        int fileR = 0;
         string[] args;
         string[] files;
-        int fileR = 0;
+        double oldWidth;
+        double oldHeight;
+        string chosenImg;
         bool fullS = false;
         bool deleteMode = false;
+        OpenFileDialog browse = new OpenFileDialog();
+        double resW = Screen.PrimaryScreen.WorkingArea.Width;
+        double resH = Screen.PrimaryScreen.WorkingArea.Height;
+        public Form1()
+        {
+            InitializeComponent();
+            pictureBox1.MouseDown += new MouseEventHandler(pictureBox1_MouseDown);
+            pictureBox1.MouseUp += new MouseEventHandler(pictureBox1_MouseUp);
+            this.KeyDown += new KeyEventHandler(pictureBox1_KeyDown);
+            this.KeyUp += new KeyEventHandler(Form1_KeyUp);
+            try
+            {
+                args = Environment.GetCommandLineArgs();
+                chosenImg = args[1];
+                loadDir();
+                loadImage();
+            }
+            catch
+            {
+                browseImage();
+                SetForegroundWindow(Handle.ToInt32());
+            }
+        }
         private void incMent(int dir, bool doDel)
         {
             if (doDel == true)
@@ -145,23 +168,22 @@ namespace ImageThing
             pictureBox1.Top = 0;
             GC.Collect();
         }
-        public Form1()
+        private void loadDir()
         {
-            InitializeComponent();
-            pictureBox1.MouseDown += new MouseEventHandler(pictureBox1_MouseDown);
-            pictureBox1.MouseUp += new MouseEventHandler(pictureBox1_MouseUp);
-            this.KeyDown += new KeyEventHandler(pictureBox1_KeyDown);
-            this.KeyUp += new KeyEventHandler(Form1_KeyUp);
-            args = Environment.GetCommandLineArgs();
-            test = Path.GetDirectoryName(args[1]);
-            files = Directory.GetFiles(test);
+            files = Directory.GetFiles(Path.GetDirectoryName(chosenImg));
             for (int i = 0; i < files.Length; i++)
             {
-                if (files[i] == args[1])
+                if (files[i] == chosenImg)
                 {
                     inc = i;
                 }
             }
+        }
+        private void browseImage()
+        {
+            browse.ShowDialog();
+            chosenImg = browse.FileName;
+            loadDir();
             loadImage();
         }
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
@@ -181,6 +203,10 @@ namespace ImageThing
         }
         private void Form1_KeyUp(object sender, KeyEventArgs e)
         {
+            if (e.KeyCode == Keys.B)
+            {
+                browseImage();
+            }
             if (e.KeyCode == Keys.F)
             {
                 if (fullS == false)
@@ -195,7 +221,7 @@ namespace ImageThing
             }
             if (e.KeyCode == Keys.H)
             {
-                MessageBox.Show("H: Help Menu \nJ: Previous Image \nK: Next Image \nX: Toggle Delete Mode \nD: Delete Image \nC: Center Image \nF: Fullscreen \nRight Click: Close \nLeft Click: Drag Window");
+                MessageBox.Show("B: Browse For an Image\nC: Center Image\nD: Delete Image\nF: Fullscreen\nH: Help Menu\nJ: Previous Image\nK: Next Image\nX: Toggle Delete Mode\nLeft Click: Drag Window\nRight Click: Close");
             }
             if (e.KeyCode == Keys.C)
             {
