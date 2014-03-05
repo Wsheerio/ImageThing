@@ -22,7 +22,6 @@ namespace ImageThing
         double height;
         double width;
         string test;
-        int index;
         int inc;
         double oldWidth;
         double oldHeight;
@@ -154,10 +153,8 @@ namespace ImageThing
             this.KeyDown += new KeyEventHandler(pictureBox1_KeyDown);
             this.KeyUp += new KeyEventHandler(Form1_KeyUp);
             args = Environment.GetCommandLineArgs();
-            test = args[1];
-            index = test.LastIndexOf("\\");
-            test = test.Substring(0, index);
-            files = Directory.GetFiles(test, "*");
+            test = Path.GetDirectoryName(args[1]);
+            files = Directory.GetFiles(test);
             for (int i = 0; i < files.Length; i++)
             {
                 if (files[i] == args[1])
