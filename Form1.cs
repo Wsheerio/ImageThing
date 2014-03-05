@@ -37,6 +37,8 @@ namespace ImageThing
         public Form1()
         {
             InitializeComponent();
+            this.TransparencyKey = Color.Fuchsia;
+            this.BackColor = Color.Fuchsia;
             pictureBox1.MouseDown += new MouseEventHandler(pictureBox1_MouseDown);
             pictureBox1.MouseUp += new MouseEventHandler(pictureBox1_MouseUp);
             this.KeyDown += new KeyEventHandler(pictureBox1_KeyDown);
