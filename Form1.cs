@@ -13,8 +13,10 @@ namespace ImageThing
 {
     public partial class Form1 : Form
     {
-        [DllImportAttribute("user32.dll")] public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
-        [DllImportAttribute("user32.dll")] public static extern bool ReleaseCapture();
+        [DllImportAttribute("user32.dll")]
+        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+        [DllImportAttribute("user32.dll")]
+        public static extern bool ReleaseCapture();
         double resH = Screen.PrimaryScreen.WorkingArea.Height;
         double resW = Screen.PrimaryScreen.WorkingArea.Width;
         double height;
@@ -22,6 +24,8 @@ namespace ImageThing
         string test;
         int index;
         int inc;
+        double oldWidth;
+        double oldHeight;
         string del;
         string[] args;
         string[] files;
@@ -46,11 +50,12 @@ namespace ImageThing
                 {
                     inc = files.Length - 1;
                 }
-                if (files[inc].EndsWith(".jpg") || files[inc].EndsWith(".png") || files[inc].EndsWith(".gif") || files[inc].EndsWith(".ico"))
+                try
                 {
+                    pictureBox1.Image = Image.FromFile(files[inc]);
                     break;
                 }
-                else
+                catch
                 {
                     if (doDel == true)
                     {
@@ -76,31 +81,29 @@ namespace ImageThing
         }
         private void loadImage()
         {
+            oldWidth = this.Width;
+            oldHeight = this.Height;
             height = Image.FromFile(files[inc]).Height;
             width = Image.FromFile(files[inc]).Width;
             pictureBox1.Image = Image.FromFile(files[inc]);
             if (fullS == false)
             {
-                if (width > resW)
+                if (width > resW || height > resH)
                 {
-                    this.Width = Convert.ToInt32(resW);
-                    pictureBox1.Width = Convert.ToInt32(resW);
-                    this.Height = Convert.ToInt32(height / (width / resW));
-                    pictureBox1.Height = Convert.ToInt32(height / (width / resW));
-                }
-                if (height > resH)
-                {
-                    this.Height = Convert.ToInt32(resH);
-                    pictureBox1.Height = Convert.ToInt32(resH);
-                    this.Width = Convert.ToInt32(width / (height / resH));
-                    pictureBox1.Width = Convert.ToInt32(width / (height / resH));
-                }
-                if (width > resW && width / height > resW / resH)
-                {
-                    this.Width = Convert.ToInt32(resW);
-                    pictureBox1.Width = Convert.ToInt32(resW);
-                    this.Height = Convert.ToInt32(height / (width / resW));
-                    pictureBox1.Height = Convert.ToInt32(height / (width / resW));
+                    if (width / height > resW / resH)
+                    {
+                        this.Width = Convert.ToInt32(resW);
+                        pictureBox1.Width = Convert.ToInt32(resW);
+                        this.Height = Convert.ToInt32(height / (width / resW));
+                        pictureBox1.Height = Convert.ToInt32(height / (width / resW));
+                    }
+                    if (width / height <= resW / resH)
+                    {
+                        this.Height = Convert.ToInt32(resH);
+                        pictureBox1.Height = Convert.ToInt32(resH);
+                        this.Width = Convert.ToInt32(width / (height / resH));
+                        pictureBox1.Width = Convert.ToInt32(width / (height / resH));
+                    }
                 }
                 if (width <= resW && height <= resH)
                 {
@@ -137,6 +140,8 @@ namespace ImageThing
                 pictureBox1.Height = Convert.ToInt32(height);
                 this.CenterToScreen();
             }
+            this.Left += Convert.ToInt32((oldWidth - this.Width) / 2);
+            this.Top += Convert.ToInt32((oldHeight - this.Height) / 2);
             pictureBox1.Left = 0;
             pictureBox1.Top = 0;
             GC.Collect();

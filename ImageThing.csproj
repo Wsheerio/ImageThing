@@ -178,6 +178,12 @@
       <Progid>ImageThing</Progid>
       <DefaultIcon>Icon.ico</DefaultIcon>
     </FileAssociation>
+    <FileAssociation Include=".tiff">
+      <Visible>False</Visible>
+      <Description>tiff</Description>
+      <Progid>ImageThing</Progid>
+      <DefaultIcon>Icon.ico</DefaultIcon>
+    </FileAssociation>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
