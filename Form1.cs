@@ -30,6 +30,8 @@ namespace ImageThing
         double oldHeight;
         string chosenImg;
         bool fullS = false;
+        int scaleThing = 1;
+        double sizeScale = 0;
         bool deleteMode = false;
         OpenFileDialog browse = new OpenFileDialog();
         double resW = Screen.PrimaryScreen.WorkingArea.Width;
@@ -37,12 +39,12 @@ namespace ImageThing
         public Form1()
         {
             InitializeComponent();
-            this.TransparencyKey = Color.Fuchsia;
-            this.BackColor = Color.Fuchsia;
             pictureBox1.MouseDown += new MouseEventHandler(pictureBox1_MouseDown);
             pictureBox1.MouseUp += new MouseEventHandler(pictureBox1_MouseUp);
             this.KeyDown += new KeyEventHandler(pictureBox1_KeyDown);
             this.KeyUp += new KeyEventHandler(Form1_KeyUp);
+            this.TransparencyKey = Color.Fuchsia;
+            this.BackColor = Color.Fuchsia;
             try
             {
                 args = Environment.GetCommandLineArgs();
@@ -56,8 +58,30 @@ namespace ImageThing
                 SetForegroundWindow(Handle.ToInt32());
             }
         }
+        private void scaleImg(double sizeStuff)
+        {
+            sizeScale += sizeStuff;
+            this.Width = Convert.ToInt32(width + (sizeScale * (width / height)));
+            this.Height = Convert.ToInt32(height + sizeScale);
+            this.Left -= Convert.ToInt32((sizeStuff * (width / height)) / 2);
+            if (scaleThing == -1 && sizeScale > 0)
+            {
+                this.Left += 1;
+            }
+            if (scaleThing == -1 && sizeScale < 0)
+            {
+                this.Left -= 1;
+            }
+            this.Top -= Convert.ToInt32(sizeStuff / 2);
+            pictureBox1.Width = this.Width;
+            pictureBox1.Height = this.Height;
+            scaleThing *= -1;
+            pictureBox1.Top = 0;
+            pictureBox1.Left = 0;
+        }
         private void incMent(int dir, bool doDel)
         {
+            sizeScale = 0;
             if (doDel == true)
             {
                 del = files[inc];
@@ -223,7 +247,7 @@ namespace ImageThing
             }
             if (e.KeyCode == Keys.H)
             {
-                MessageBox.Show("B: Browse For an Image\nC: Center Image\nD: Delete Image\nF: Fullscreen\nH: Help Menu\nJ: Previous Image\nK: Next Image\nX: Toggle Delete Mode\nLeft Click: Drag Window\nRight Click: Close");
+                MessageBox.Show(">: Increase Size\n<: Decrease Size\nB: Browse For an Image\nC: Center Image\nD: Delete Image\nF: Fullscreen\nH: Help Menu\nJ: Previous Image\nK: Next Image\nX: Toggle Delete Mode\nLeft Click: Drag Window\nRight Click: Close");
             }
             if (e.KeyCode == Keys.C)
             {
@@ -266,6 +290,18 @@ namespace ImageThing
         }
         private void pictureBox1_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.KeyCode == Keys.OemPeriod && sizeScale + width < resW && sizeScale + height < resH)
+            {
+                scaleImg(4);
+            }
+            if (e.KeyCode == Keys.Oemcomma && sizeScale > 0)
+            {
+                scaleImg(-4);
+            }
+            //if (e.KeyCode == Keys.Oemcomma && sizeScale + width > 0 && sizeScale + height > 0)
+            //{
+            //    scaleImg(-4);
+            //}
             if (fullS == true)
             {
                 if (e.KeyCode == Keys.Down && height > resH)
