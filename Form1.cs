@@ -30,7 +30,6 @@ namespace ImageThing
         double oldHeight;
         string chosenImg;
         bool fullS = false;
-        int scaleThing = 1;
         double sizeScale = 0;
         bool deleteMode = false;
         OpenFileDialog browse = new OpenFileDialog();
@@ -60,28 +59,20 @@ namespace ImageThing
         }
         private void scaleImg(double sizeStuff)
         {
+            oldWidth = this.Width;
+            oldHeight = this.Height;
             sizeScale += sizeStuff;
             this.Width = Convert.ToInt32(width + (sizeScale * (width / height)));
             this.Height = Convert.ToInt32(height + sizeScale);
-            this.Left -= Convert.ToInt32((sizeStuff * (width / height)) / 2);
-            if (scaleThing == -1 && sizeScale > 0)
-            {
-                this.Left += 1;
-            }
-            if (scaleThing == -1 && sizeScale < 0)
-            {
-                this.Left -= 1;
-            }
-            this.Top -= Convert.ToInt32(sizeStuff / 2);
             pictureBox1.Width = this.Width;
             pictureBox1.Height = this.Height;
-            scaleThing *= -1;
+            this.Left += Convert.ToInt32((oldWidth - this.Width) / 2);
+            this.Top += Convert.ToInt32((oldHeight - this.Height) / 2);
             pictureBox1.Top = 0;
             pictureBox1.Left = 0;
         }
         private void incMent(int dir, bool doDel)
         {
-            sizeScale = 0;
             if (doDel == true)
             {
                 del = files[inc];
@@ -129,6 +120,7 @@ namespace ImageThing
         }
         private void loadImage()
         {
+            sizeScale = 0;
             oldWidth = this.Width;
             oldHeight = this.Height;
             height = Image.FromFile(files[inc]).Height;
@@ -160,6 +152,8 @@ namespace ImageThing
                     this.Width = Convert.ToInt32(width);
                     pictureBox1.Width = Convert.ToInt32(width);
                 }
+                this.Left += Convert.ToInt32((oldWidth - this.Width) / 2);
+                this.Top += Convert.ToInt32((oldHeight - this.Height) / 2);
             }
             else
             {
@@ -188,8 +182,6 @@ namespace ImageThing
                 pictureBox1.Height = Convert.ToInt32(height);
                 this.CenterToScreen();
             }
-            this.Left += Convert.ToInt32((oldWidth - this.Width) / 2);
-            this.Top += Convert.ToInt32((oldHeight - this.Height) / 2);
             pictureBox1.Left = 0;
             pictureBox1.Top = 0;
             GC.Collect();
@@ -290,18 +282,17 @@ namespace ImageThing
         }
         private void pictureBox1_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.OemPeriod && sizeScale + width < resW && sizeScale + height < resH)
+            if (fullS == false)
             {
-                scaleImg(4);
+                if (e.KeyCode == Keys.OemPeriod && sizeScale + width < resW && sizeScale + height < resH)
+                {
+                    scaleImg(4);
+                }
+                if (e.KeyCode == Keys.Oemcomma && width <= resW && height <= resH)
+                {
+                    scaleImg(-4);
+                }
             }
-            if (e.KeyCode == Keys.Oemcomma && sizeScale > 0)
-            {
-                scaleImg(-4);
-            }
-            //if (e.KeyCode == Keys.Oemcomma && sizeScale + width > 0 && sizeScale + height > 0)
-            //{
-            //    scaleImg(-4);
-            //}
             if (fullS == true)
             {
                 if (e.KeyCode == Keys.Down && height > resH)
