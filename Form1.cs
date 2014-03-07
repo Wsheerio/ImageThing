@@ -221,6 +221,11 @@ namespace ImageThing
         }
         private void Form1_KeyUp(object sender, KeyEventArgs e)
         {
+            if (e.KeyCode == Keys.R)
+            {
+                sizeScale = 0;
+                scaleImg(0);
+            }
             if (e.KeyCode == Keys.B)
             {
                 browseImage();
@@ -239,7 +244,7 @@ namespace ImageThing
             }
             if (e.KeyCode == Keys.H)
             {
-                MessageBox.Show(">: Increase Size\n<: Decrease Size\nB: Browse For an Image\nC: Center Image\nD: Delete Image\nF: Fullscreen\nH: Help Menu\nJ: Previous Image\nK: Next Image\nX: Toggle Delete Mode\nLeft Click: Drag Window\nRight Click: Close");
+                MessageBox.Show(">: Increase Size\n<: Decrease Size\nB: Browse For an Image\nC: Center Image\nD: Delete Image\nF: Fullscreen\nH: Help Menu\nJ: Previous Image\nK: Next Image\nR: Reset Image Size\nX: Toggle Delete Mode\nLeft Click: Drag Window\nRight Click: Close");
             }
             if (e.KeyCode == Keys.C)
             {
@@ -288,7 +293,7 @@ namespace ImageThing
                 {
                     scaleImg(4);
                 }
-                if (e.KeyCode == Keys.Oemcomma && width <= resW && height <= resH)
+                if (e.KeyCode == Keys.Oemcomma && width <= resW && height <= resH && width + sizeScale * (width / height) > 0 && height + sizeScale > 0)
                 {
                     scaleImg(-4);
                 }
