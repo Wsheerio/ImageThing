@@ -6,4 +6,4 @@ Minimalistic Image Viewer
 Downloads
 =========
 
-[This](http://download1517.mediafire.com/5purdo2h7csg/tpodt5349ccp328/ImageThing.exe) should be a build of the most recent version.
+[This](https://github.com/Wsheerio/ImageThing/blob/master/Executable/ImageThing.exe?raw=true) should be a build of the most recent version.
