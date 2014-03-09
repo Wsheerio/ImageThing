@@ -35,6 +35,8 @@ namespace ImageThing
         OpenFileDialog browse = new OpenFileDialog();
         double resW = Screen.PrimaryScreen.WorkingArea.Width;
         double resH = Screen.PrimaryScreen.WorkingArea.Height;
+        string[] keyConfig = System.IO.File.ReadAllLines(@"config.txt");
+        Keys[] keyStuff;
         public Form1()
         {
             InitializeComponent();
@@ -42,14 +44,20 @@ namespace ImageThing
             pictureBox1.MouseUp += new MouseEventHandler(pictureBox1_MouseUp);
             this.KeyDown += new KeyEventHandler(pictureBox1_KeyDown);
             this.KeyUp += new KeyEventHandler(Form1_KeyUp);
+            keyStuff = new Keys[keyConfig.Length];
             this.TransparencyKey = Color.Fuchsia;
             this.BackColor = Color.Fuchsia;
+            for (int i = 0; i < keyConfig.Length; i++)
+            {
+                keyStuff[i] = (Keys)Enum.Parse(typeof(Keys), keyConfig[i].Substring(keyConfig[i].IndexOf(' ') + 1));
+            }
             try
             {
                 args = Environment.GetCommandLineArgs();
                 chosenImg = args[1];
                 loadDir();
                 loadImage();
+
             }
             catch
             {
@@ -221,7 +229,7 @@ namespace ImageThing
         }
         private void Form1_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.M && fullS == false)
+            if (e.KeyCode == keyStuff[9] && fullS == false)
             {
                 if (width / height > resW / resH)
                 {
@@ -233,16 +241,16 @@ namespace ImageThing
                 }
                 scaleImg(0);
             }
-            if (e.KeyCode == Keys.R && fullS == false && width < resW && height < resH)
+            if (e.KeyCode == keyStuff[10] && fullS == false && width < resW && height < resH)
             {
                 sizeScale = 0;
                 scaleImg(0);
             }
-            if (e.KeyCode == Keys.B)
+            if (e.KeyCode == keyStuff[2])
             {
                 browseImage();
             }
-            if (e.KeyCode == Keys.F)
+            if (e.KeyCode == keyStuff[5])
             {
                 if (fullS == false && (width > resW || height > resH))
                 {
@@ -254,15 +262,15 @@ namespace ImageThing
                 }
                 loadImage();
             }
-            if (e.KeyCode == Keys.H)
+            if (e.KeyCode == keyStuff[6])
             {
                 MessageBox.Show(">: Increase Size\n<: Decrease Size\nB: Browse For an Image\nC: Center Image\nD: Delete Image\nF: Fullscreen\nH: Help Menu\nJ: Previous Image\nK: Next Image\nM: Maximize Image\nR: Reset Image Size\nX: Toggle Delete Mode\nLeft Click: Drag Window\nRight Click: Close");
             }
-            if (e.KeyCode == Keys.C)
+            if (e.KeyCode == keyStuff[3])
             {
                 this.CenterToScreen();
             }
-            if (e.KeyCode == Keys.X)
+            if (e.KeyCode == keyStuff[11])
             {
                 if (deleteMode == false)
                 {
@@ -275,7 +283,7 @@ namespace ImageThing
                     MessageBox.Show("Delete Mode Disabled");
                 }
             }
-            if (e.KeyCode == Keys.D)
+            if (e.KeyCode == keyStuff[4])
             {
                 if (deleteMode == true)
                 {
@@ -286,12 +294,12 @@ namespace ImageThing
                     MessageBox.Show("Press X to enable Delete Mode");
                 }
             }
-            if (e.KeyCode == Keys.K)
+            if (e.KeyCode == keyStuff[8])
             {
                 incMent(1, false);
                 loadImage();
             }
-            if (e.KeyCode == Keys.J)
+            if (e.KeyCode == keyStuff[7])
             {
                 incMent(-1, false);
                 loadImage();
@@ -301,18 +309,18 @@ namespace ImageThing
         {
             if (fullS == false)
             {
-                if (e.KeyCode == Keys.OemPeriod && sizeScale + width < resW && sizeScale + height < resH)
+                if (e.KeyCode == keyStuff[0] && sizeScale + width < resW && sizeScale + height < resH)
                 {
                     scaleImg(4);
                 }
-                if (e.KeyCode == Keys.Oemcomma && width <= resW && height <= resH && width + sizeScale * (width / height) > 0 && height + sizeScale > 0)
+                if (e.KeyCode == keyStuff[1] && width <= resW && height <= resH && width + sizeScale * (width / height) > 0 && height + sizeScale > 0)
                 {
                     scaleImg(-4);
                 }
             }
             if (fullS == true)
             {
-                if (e.KeyCode == Keys.Down && height > resH)
+                if (e.KeyCode == keyStuff[12] && height > resH)
                 {
                     pictureBox1.Top -= 50;
                     if (pictureBox1.Top < height * -1 + resH)
@@ -320,7 +328,7 @@ namespace ImageThing
                         pictureBox1.Top = Convert.ToInt32(height * -1 + resH);
                     }
                 }
-                if (e.KeyCode == Keys.Up)
+                if (e.KeyCode == keyStuff[13])
                 {
                     pictureBox1.Top += 50;
                     if (pictureBox1.Top > 0)
@@ -328,7 +336,7 @@ namespace ImageThing
                         pictureBox1.Top = 0;
                     }
                 }
-                if (e.KeyCode == Keys.Right && width > resW)
+                if (e.KeyCode == keyStuff[14] && width > resW)
                 {
                     pictureBox1.Left -= 50;
                     if (pictureBox1.Left < width * -1 + resW)
@@ -336,7 +344,7 @@ namespace ImageThing
                         pictureBox1.Left = Convert.ToInt32(width * -1 + resW);
                     }
                 }
-                if (e.KeyCode == Keys.Left)
+                if (e.KeyCode == keyStuff[15])
                 {
                     pictureBox1.Left += 50;
                     if (pictureBox1.Left > 0)

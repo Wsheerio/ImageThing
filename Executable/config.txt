@@ -1,0 +1,16 @@
+incSize OemPeriod
+decSize Oemcomma
+browse B
+center C
+delete D
+fullscreen F
+help H
+prevImg J
+nextImg K
+maximize M
+reset R
+deleteMode X
+down Down
+up Up
+right Right
+left Left
