@@ -264,7 +264,7 @@ namespace ImageThing
             }
             if (e.KeyCode == keyStuff[6])
             {
-                MessageBox.Show(">: Increase Size\n<: Decrease Size\nB: Browse For an Image\nC: Center Image\nD: Delete Image\nF: Fullscreen\nH: Help Menu\nJ: Previous Image\nK: Next Image\nM: Maximize Image\nR: Reset Image Size\nX: Toggle Delete Mode\nLeft Click: Drag Window\nRight Click: Close");
+                MessageBox.Show(keyStuff[0] + ": Increase Size\n" + keyStuff[1] + ": Decrease Size\n" + keyStuff[2] + ": Browse For an Image\n" + keyStuff[3] + ": Center Image\n" + keyStuff[4] + ": Delete Image\n" + keyStuff[5] + ": Fullscreen\n" + keyStuff[6] + ": Help Menu\n" + keyStuff[7] + ": Previous Image\n" + keyStuff[8] + ": Next Image\n" + keyStuff[9] + ": Maximize Image\n" + keyStuff[10] + ": Reset Image Size\n" + keyStuff[11] + ": Toggle Delete Mode\nLeft Click: Drag Window\nRight Click: Close");
             }
             if (e.KeyCode == keyStuff[3])
             {
