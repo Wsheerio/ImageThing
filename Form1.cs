@@ -26,6 +26,7 @@ namespace ImageThing
         int fileR = 0;
         string[] args;
         string[] files;
+        Keys[] keyStuff;
         double oldWidth;
         double oldHeight;
         string chosenImg;
@@ -35,8 +36,7 @@ namespace ImageThing
         OpenFileDialog browse = new OpenFileDialog();
         double resW = Screen.PrimaryScreen.WorkingArea.Width;
         double resH = Screen.PrimaryScreen.WorkingArea.Height;
-        string[] keyConfig = System.IO.File.ReadAllLines(@"config.txt");
-        Keys[] keyStuff;
+        string[] keyConfig = System.IO.File.ReadAllLines(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + "\\config.txt");
         public Form1()
         {
             InitializeComponent();
@@ -57,7 +57,6 @@ namespace ImageThing
                 chosenImg = args[1];
                 loadDir();
                 loadImage();
-
             }
             catch
             {
